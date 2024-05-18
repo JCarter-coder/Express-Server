@@ -1,12 +1,13 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import pool from '../db.js';
+import jwtGenerator from '../utils/jwtGenerator.js';
 
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
     try {
-        // destructure data
+        // destructure body data
         const { name, email, password } = req.body;
         // check if user already exists
         const user = await pool.query('SELECT * FROM users WHERE user_email = $1', [
@@ -25,7 +26,10 @@ router.post('/register', async (req, res) => {
             name, email, bcryptPassWord
         ]);
 
-        res.json(newUser.rows[0]);
+        // create a JSON web token
+        const token = jwtGenerator(newUser.rows[0].user_id);
+
+        res.json({ token });
     }
     catch (error) {
         console.log(error.message);
