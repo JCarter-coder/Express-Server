@@ -2,10 +2,11 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import pool from '../db.js';
 import jwtGenerator from '../utils/jwtGenerator.js';
+import validInfo from '../middlewares/validInfo.js';
 
 const router = express.Router();
 
-router.post('/register', async (req, res) => {
+router.post('/register', validInfo, async (req, res) => {
     try {
         // destructure body data
         const { name, email, password } = req.body;
@@ -37,7 +38,7 @@ router.post('/register', async (req, res) => {
     }
 })
 
-router.post('/login', async(req, res) => {
+router.post('/login', validInfo, async(req, res) => {
     try {
         // destructure data
         const { email, password } = req.body;
