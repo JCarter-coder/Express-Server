@@ -1,13 +1,15 @@
 import express from "express";
 import pool from './db.js';
-import jwtAuthRoutes from './routes/jwtAuth.js';
+import jwtAuthRoute from './routes/jwtAuth.js';
+import adminRoute from './routes/admin.js';
 
 const app = express();
 app.use(express.json());
 
 const PORT = 3000;
 
-app.use('/api/auth', jwtAuthRoutes);
+app.use('/api/auth', jwtAuthRoute);
+app.use('/api/admin', adminRoute);
 
 app.get('/', async (req, res) => {
     try {
